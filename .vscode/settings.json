@@ -48,6 +48,7 @@
         "vector": "cpp",
         "xhash": "cpp",
         "algorithm": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "functional": "cpp"
     }
 }
