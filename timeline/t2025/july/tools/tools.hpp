@@ -40,7 +40,6 @@ public:
         ); 
         return s;
     }
-
     static string rtrim(const string &str) {
         string s(str);
         s.erase(
@@ -53,7 +52,6 @@ public:
     static string trim(const string &str){
         return StringOps::rtrim(StringOps::ltrim(str));
     }
-
     static vector<string> split(const string &str) {
         vector<string> tokens;
 
@@ -70,5 +68,54 @@ public:
 
         return tokens;
     }
-    
+    static string uppercase(const string &str){
+        string s(str);
+        transform(s.begin(), s.end(), s.begin(), ::toupper);
+        return s;
+    }
+    static string lowercase(const string &str){
+        string s(str);
+        transform(s.begin(), s.end(), s.begin(), ::tolower);
+        return s;
+    }
+    static vector<string> split (const string &inpString, const string splitter){
+        string inpCopy{inpString};
+        vector<string> res;
+        size_t pos = 0;
+        string token;
+        while ((pos = inpCopy.find(splitter)) != string::npos) {
+            token = inpCopy.substr(0, pos);
+            res.push_back(token);
+            inpCopy.erase(0, pos + splitter.length());
+        }
+        res.push_back(inpCopy);
+        return res;
+    }
+    static string join(string delim, vector<string> v){
+        string res = v[0];
+        for (int i = 1; i < v.size(); i++){
+            res += delim + v[i];
+        }
+        return res;
+    }
 };
+
+// namespace PathOps {
+//     string basepath(const string &path){
+//         return "";
+//     }
+// }
+
+namespace ioUtils{
+    template <class printType>
+    void print(printType p){
+        cout << p;
+    }
+    template <class printType>
+    void printLine(vector<printType> p, char delim = ' '){
+        for (printType k: p){
+            cout << k << delim;
+        }
+        cout << endl;
+    }
+}
