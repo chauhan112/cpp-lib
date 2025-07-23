@@ -5,30 +5,10 @@
 #include <cctype>
 #include <algorithm>
 #include <numeric>
+#include <set>
 
 using namespace std;
 
-namespace Array{
-    int sum(vector<int> &v) {
-        return accumulate(v.begin(), v.end(), 0);
-    }
-
-    template <typename Container, typename UnaryOperation>
-    auto map(const Container& input_container, UnaryOperation op)
-        -> std::vector<decltype(op(*input_container.begin()))> 
-    {
-        using ValueType = typename Container::value_type;
-        using ResultType = decltype(op(std::declval<ValueType>())); 
-
-        std::vector<ResultType> result_vector;
-        result_vector.reserve(input_container.size());
-
-        std::transform(input_container.begin(), input_container.end(),
-                    std::back_inserter(result_vector),
-                    op);
-        return result_vector;
-    } 
-}
 
 class StringOps{
 public:
@@ -52,22 +32,6 @@ public:
     static string trim(const string &str){
         return StringOps::rtrim(StringOps::ltrim(str));
     }
-    static vector<string> split(const string &str) {
-        vector<string> tokens;
-
-        string::size_type start = 0;
-        string::size_type end = 0;
-
-        while ((end = str.find(" ", start)) != string::npos) {
-            tokens.push_back(str.substr(start, end - start));
-
-            start = end + 1;
-        }
-
-        tokens.push_back(str.substr(start));
-
-        return tokens;
-    }
     static string uppercase(const string &str){
         string s(str);
         transform(s.begin(), s.end(), s.begin(), ::toupper);
@@ -78,7 +42,7 @@ public:
         transform(s.begin(), s.end(), s.begin(), ::tolower);
         return s;
     }
-    static vector<string> split (const string &inpString, const string splitter){
+    static vector<string> split (const string &inpString, const string splitter = " "){
         string inpCopy{inpString};
         vector<string> res;
         size_t pos = 0;
@@ -98,6 +62,15 @@ public:
         }
         return res;
     }
+    static string slice(string s, int start, int end){
+        return s.substr(start, end - start);
+    }
+    static string rjust(string s, int width, char c = ' '){
+        return string(width - s.length(), c) + s;
+    }
+    static string ljust(string s, int width, char c = ' '){
+        return s + string(width - s.length(), c);
+    }
 };
 
 // namespace PathOps {
@@ -106,13 +79,76 @@ public:
 //     }
 // }
 
+namespace pythonOps{
+    int pInt(string s){
+        return stoi(s);
+    }
+    string pStr(int i){
+        return to_string(i);
+    }
+    template <class T>
+    set<T> pSet(vector<T> v){
+        return set<T>(v.begin(), v.end());
+    }
+    long pSum(vector<int> v){
+        long s = 0;
+        for (int i: v){
+            s += i;
+        }
+        return s;
+    }
+    template <class T>
+    T pMax(vector<T> v){
+        return *max_element(v.begin(), v.end());
+    }
+    template <typename Container, typename UnaryOperation>
+    auto pMap(const Container& input_container, UnaryOperation op)
+        -> std::vector<decltype(op(*input_container.begin()))> 
+    {
+        using ValueType = typename Container::value_type;
+        using ResultType = decltype(op(std::declval<ValueType>())); 
+
+        std::vector<ResultType> result_vector;
+        result_vector.reserve(input_container.size());
+
+        std::transform(input_container.begin(), input_container.end(),
+                    std::back_inserter(result_vector),
+                    op);
+        return result_vector;
+    }
+
+    // template <typename Container, typename UnaryOperation>
+    // auto pFilter(const Container& input_container, UnaryOperation op)
+    //     -> std::vector<decltype(op(*input_container.begin()))> 
+    // {
+    //     using ValueType = typename Container::value_type;
+        
+
+    //     std::vector<ResultType> result_vector;
+    //     result_vector.reserve(input_container.size());
+
+    //     std::transform(input_container.begin(), input_container.end(),
+    //                 std::back_inserter(result_vector),
+    //                 op);
+    //     return result_vector;
+    // }
+
+    // template <class T>
+    // pSorted(vector<T> v, bool reverse = false, keyFunc key = [](T t){return t;} ){
+    //     sort(v.begin(), v.end());
+    // }
+
+
+
+
+}
 namespace ioUtils{
     template <class printType>
     void print(printType p){
         cout << p;
     }
     template <class printType>
-    void printLine(vector<printType> p, char delim = ' '){
+    void printLine(vector<printType> p, string delim = " "){
         for (printType k: p){
             cout << k << delim;
         }
